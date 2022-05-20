@@ -10,13 +10,13 @@ function Board() {
   // const squares = Array(9).fill(null)
 
   const [squares, setSquares] = React.useState(
-    JSON.parse(window.localStorage.getItem('squares')) || initialValues,
+    () => JSON.parse(window.localStorage.getItem('squares')) || initialValues,
   )
 
   useEffect(() => {
     //save statr to localStorage
     window.localStorage.setItem('squares', JSON.stringify(squares))
-  })
+  }, [squares])
 
   // 🐨 We'll need the following bits of derived state:
   // - nextValue ('X' or 'O')
