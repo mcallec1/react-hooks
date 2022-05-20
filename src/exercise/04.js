@@ -59,13 +59,23 @@ function Game() {
     if (winner || square[square]) return
 
     //make a copy of the history, then set the new value
-    const historyCopy = [...history]
-    historyCopy[step][square] = nextValue
+    let historyCopy = [...history]
+
+    //if the user clicked on a new square earlier in the history,
+    //then delete the history from this step forward
+    //basically the game will continue from this point as if it was the latest step
+
+    console.log('step', step)
+    console.log('history.length', history.length)
+    if (step < history.length - 1) {
+      historyCopy = [...historyCopy.slice(0, step + 1)]
+    }
 
     //we need to add a new set of squares to the history array
     //and it needs to be a copy of the most recent squares (to carry the history along)
     //so make a copy and push it onto the history array
     const newSquares = [...historyCopy[step]]
+    newSquares[square] = nextValue
     historyCopy.push(newSquares)
     setHistory(historyCopy)
 
@@ -80,19 +90,25 @@ function Game() {
   const moves = () => {
     return (
       <>
-        <li>
-          <button>Go to game start</button>
-        </li>
         {history.map((squares, index) => {
-          return index < step ? (
+          return (
             <li key={index}>
-              <button>Go to move #{index}</button>
+              <button
+                onClick={() => setStep(index)}
+                disabled={index === step ? true : false}
+              >
+                {index === 0 ? 'Go to game start' : `Go to move #${index}`}
+                {index === step ? '(current)' : ''}
+              </button>
             </li>
-          ) : null
+          )
         })}
       </>
     )
   }
+
+  console.log(step)
+  console.log(currentSquares)
 
   return (
     <div className="game">
