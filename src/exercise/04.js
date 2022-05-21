@@ -65,8 +65,6 @@ function Game() {
     //then delete the history from this step forward
     //basically the game will continue from this point as if it was the latest step
 
-    console.log('step', step)
-    console.log('history.length', history.length)
     if (step < history.length - 1) {
       historyCopy = [...historyCopy.slice(0, step + 1)]
     }
